@@ -1,3 +1,4 @@
+import styles from "./Keyboard.module.css" 
 const KEYBOARD_ROWS = [
   ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
   ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
@@ -8,22 +9,15 @@ const Keyboard: React.FC<{
   getState: (letter: string) => string
 }> = ({ getState }) => {
   return (
-    <div style={{ marginTop: "2rem" }}>
+    <div className={styles.keyboard}>
       {KEYBOARD_ROWS.map((row, rowIndex) => (
-        <div key={rowIndex} style={{ textAlign: "center" }}>
+        <div key={rowIndex} className={styles.row}>
           {row.map((letter) => (
             <span
               key={letter}
+              className={styles.key} 
               style={{
-                display: "inline-block",
-                padding: "0.5rem",
-                margin: "0.2rem",
-                color: "white",
-                background: getState(letter), 
-                borderRadius: "4px",
-                minWidth: "1.5rem",
-                textAlign: "center",
-                textTransform: "uppercase",
+                background: getState(letter),  
               }}
             >
               {letter}

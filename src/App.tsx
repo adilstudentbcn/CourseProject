@@ -1,109 +1,49 @@
-import { useState, useEffect } from "react"
-import Guesses from "./Guesses"
-import Keyboard from "./Keyboard"
-import {
-  type State,
-  createState,
-  getLetterState,
-  isWinner,
-  isGameOver,
-} from "./logic"
+import { Route, Routes, Link, Outlet } from "react-router"
+import Home from "./Home"
+import WordlishGame from "./WordlishGame" // FIXED: Pointing to your local file
+import Leaderboard from "./Leaderboard"
+import LeaderboardDetail from "./LeaderboardDetail"
+
+const AppLayout: React.FC = () => {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <nav style={{ 
+        padding: "1rem", 
+        borderBottom: "1px solid #555", 
+        display: "flex", 
+        gap: "1rem", 
+        justifyContent: "center" 
+      }}>
+        <Link to="/">Home</Link>
+        <Link to="/play/wordlish">Play</Link>
+        <Link to="/leaderboard">Leaderboards</Link>
+      </nav>
+
+      <main style={{ 
+        flex: 1, 
+        display: "flex", 
+        flexDirection: "column", 
+        alignItems: "center", 
+        padding: "2rem",
+        width: "100%" 
+      }}>
+        <Outlet />
+      </main>
+    </div>
+  )
+}
 
 const App: React.FC = () => {
-  const [state, setState] = useState<State>()
-
-  
-  useEffect(() => {
-    if (!state || isGameOver(state)) return 
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const key = event.key.toLowerCase()
-
-    
-      if (key === "backspace") {
-        setState({
-          ...state,
-          currentGuess: state.currentGuess.slice(0, -1),
-        })
-      }
-
-      
-      if (key === "enter" && state.currentGuess.length === 5) {
-        setState({
-          ...state,
-          guesses: [...state.guesses, state.currentGuess],
-          currentGuess: "",
-        })
-      }
-
-  
-      if (/^[a-z]$/.test(key) && state.currentGuess.length < 5) {
-        setState({
-          ...state,
-          currentGuess: state.currentGuess + key,
-        })
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown) // Cleanup
-  }, [state])
-
-  
-  if (!state) {
-    return (
-      <div style={{ textAlign: "center", marginTop: "5rem" }}>
-        <h1>Wordlish</h1>
-        <button onClick={() => setState(createState())}>Begin Game</button>
-      </div>
-    )
-  }
-
-  // Check game status
-  const won = isWinner(state)
-  const finished = isGameOver(state)
-
-  
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-    >
-      <h1>Wordlish</h1>
-
-    
-      {finished && (
-        <div
-          style={{
-            marginBottom: "1rem",
-            fontWeight: "bold",
-            fontSize: "1.2rem",
-            textAlign: "center",
-          }}
-        >
-          {won ? "You Won!" : `Game Over! The word was: ${state.word}`}
-          <br />
-          <button
-            onClick={() => setState(createState())}
-            style={{ marginTop: "0.5rem" }}
-          >
-            Play Again
-          </button>
-        </div>
-      )}
-
-      <Guesses
-        guesses={state.guesses}
-        currentGuess={state.currentGuess}
-        getState={(letter: string, position: number) =>
-          getLetterState(state, letter, position)
-        }
-      />
-
-    
-      {!finished && (
-        <Keyboard getState={(letter: string) => getLetterState(state, letter)} />
-      )}
-    </div>
+    <Routes>
+      <Route Component={AppLayout}>
+        <Route index Component={Home} />
+        {/* FIXED: Using WordlishGame component here */}
+        <Route path="/play/wordlish" Component={WordlishGame} />
+        <Route path="/leaderboard" Component={Leaderboard} />
+        <Route path="/leaderboard/:slug" Component={LeaderboardDetail} />
+      </Route>
+    </Routes>
   )
 }
 

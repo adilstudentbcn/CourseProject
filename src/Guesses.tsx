@@ -1,3 +1,5 @@
+import styles from "./Guesses.module.css" 
+
 const NUM_GUESSES = 6
 
 const Guesses: React.FC<{
@@ -6,36 +8,25 @@ const Guesses: React.FC<{
   getState: (letter: string, position: number) => string
 }> = ({ guesses, currentGuess, getState }) => {
   return (
-    <div>
+    <div className={styles.guesses}>
       {Array.from({ length: NUM_GUESSES }).map((_, rowIndex) => {
   
         const isCurrentGuess = rowIndex === guesses.length
 
-    
         const word = isCurrentGuess 
           ? currentGuess.padEnd(5, " ") 
           : (guesses[rowIndex] || "     ")
         
         return (
-          <div key={rowIndex} style={{ textAlign: "center" }}>
+          <div key={rowIndex} className={styles.row}>
             {word.split("").map((letter, letterIndex) => (
               <span
                 key={letterIndex}
+                className={styles.letter} 
                 style={{
-                  display: "inline-block",
-                  width: "2rem",
-                  height: "2rem",
-                  lineHeight: "2rem",
-                  textAlign: "center",
-                  margin: "0.25rem",
-                  color: "white",
-                  background: getState(letter, letterIndex),
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                  border: "1px solid #555"
+                  background: getState(letter, letterIndex), 
                 }}
               >
-              
                 {letter === " " ? "_" : letter}
               </span>
             ))}
