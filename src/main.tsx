@@ -10,8 +10,8 @@ if (!root) throw new Error("Cannot find #root")
 
 createRoot(root).render(
   <StrictMode>
-    <BrowserRouter> {}
-      <App />
-    </BrowserRouter>
+    <BrowserRouter basename="/CourseProject/">
+  <App />
+</BrowserRouter>
   </StrictMode>,
 )

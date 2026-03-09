@@ -1,3 +1,4 @@
+import React from 'react';
 import { Route, Routes, Link, Outlet } from "react-router"
 import Home from "./Home"
 import WordlishGame from "./WordlishGame" // FIXED: Pointing to your local file
