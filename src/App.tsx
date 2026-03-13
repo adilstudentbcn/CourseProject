@@ -7,7 +7,7 @@ import LeaderboardDetail from "./pages/LeaderboardDetail";
 
 const App: FC = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/CourseProject">
       <nav
         style={{
           padding: "1rem",
