@@ -1,12 +1,8 @@
-import { render } from '@testing-library/react'
-import { BrowserRouter } from 'react-router'
-import { it } from 'vitest'
-import App from './App'
+import { render } from "@testing-library/react";
 
-it('renders the App without crashing', () => {
-  render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  )
-})
+import { it } from "vitest";
+import App from "./App";
+
+it("renders the App without crashing", () => {
+  render(<App />);
+});

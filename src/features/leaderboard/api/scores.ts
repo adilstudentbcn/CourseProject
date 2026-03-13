@@ -1,6 +1,15 @@
+import useAsync from "../../../shared/useAsync";
 
-const scores = {
-  wordlish: [
+export type Score = {
+  id: number;
+  player: string;
+  score: number;
+};
+
+export async function fetchScores(): Promise<Score[]> {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  return [
     { id: 1, player: "Alice", score: 100 },
     { id: 2, player: "Bob", score: 95 },
     { id: 3, player: "Charlie", score: 90 },
@@ -11,16 +20,9 @@ const scores = {
     { id: 8, player: "Hank", score: 65 },
     { id: 9, player: "Ivy", score: 60 },
     { id: 10, player: "Jack", score: 55 },
-    { id: 11, player: "Karen", score: 50 },
-  ]
+  ];
 }
 
-
-export const getGames = () => {
-  return Object.keys(scores)
-}
-
-export const getTopScorers = (gameSlug: string, limit: number) => {
-  const gameScores = scores[gameSlug as keyof typeof scores] || []
-  return gameScores.sort((a, b) => b.score - a.score).slice(0, limit)
+export function useScores() {
+  return useAsync(fetchScores);
 }
